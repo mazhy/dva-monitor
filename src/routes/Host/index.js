@@ -31,14 +31,6 @@ const status = ['关闭', '运行中', '已上线', '异常'];
 }))
 @Form.create()
 export default class Index extends PureComponent {
-  state = {
-    expandForm: false,
-    selectedRows: [],
-    formValues: {},
-    showList: true,
-    showDetail: false,
-    detailId: '',
-  };
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -86,18 +78,15 @@ export default class Index extends PureComponent {
     });
   };
 
-  toggleForm = () => {
-    const { expandForm } = this.state;
-    this.setState({
-      expandForm: !expandForm,
-    });
-  };
 
 
   handleSelectRows = rows => {
-    this.setState({
-      selectedRows: rows,
-    });
+    const { dispatch } = this.props;
+    const payload = { selectedRows: rows }
+    dispatch({
+      type: 'publicMethod',
+      payload,
+    })
   };
 
   handleSearch = e => {
@@ -162,14 +151,12 @@ export default class Index extends PureComponent {
   }
 
 
-
-
   render() {
     const {
-      host: { data },
+      host: { data, selectedRows},
       loading,
+      dispatch,
     } = this.props;
-    const { selectedRows } = this.state;
 
     const columns = [
       {
@@ -183,25 +170,6 @@ export default class Index extends PureComponent {
       {
         title: '状态',
         dataIndex: 'type',
-        filters: [
-          {
-            text: status[0],
-            value: 0,
-          },
-          {
-            text: status[1],
-            value: 1,
-          },
-          {
-            text: status[2],
-            value: 2,
-          },
-          {
-            text: status[3],
-            value: 3,
-          },
-        ],
-        onFilter: (value, record) => record.status.toString() === value,
         render(val) {
           return <Badge status={statusMap[val]} text={status[val]} />;
         },
@@ -209,7 +177,6 @@ export default class Index extends PureComponent {
       {
         title: '更新时间',
         dataIndex: 'date',
-        sorter: true,
         render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       },
       {
@@ -222,20 +189,34 @@ export default class Index extends PureComponent {
       },
     ];
 
-    const handleDetail = (id) => {
-      this.setState({
+    const handleDetail = () => {
+      const payload = {
         showList: false,
         showDetail: true,
-        detailId: id,
-      })
+      }
+      dispatch({
+        type: 'host/publicMethod',
+        payload,
+      });
+    }
+
+    const handleCancal = () => {
+      const payload = {
+        showList: true,
+        showDetail: false,
+      }
+      dispatch({
+        type: 'host/publicMethod',
+        payload,
+      });
     }
 
     const renderForm = () => {
-      console.log(this)
       return this.renderSimpleForm();
     }
 
-    const { showList, showDetail } = this.state
+    const { host } = this.props
+    const {showList, showDetail} = host
     return (
       <div>
         { showList  && (
@@ -250,7 +231,7 @@ export default class Index extends PureComponent {
           />
         )}
         {showDetail && (
-          <Detail />
+          <Detail onCancle={handleCancal} />
         )}
 
       </div>

@@ -6,16 +6,16 @@
 
 import React from 'react'
 // import PropTypes from 'prop-types'
-import { Form, Tabs, Card, Row, Col} from 'antd'
+import { Form, Tabs, Card, Row, Col, Button} from 'antd'
 import DescriptionList from 'components/DescriptionList';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import styles from '../index.less';
 import CPU from './cpu'
-
+import Properties from './properties'
 const { Description } = DescriptionList;
 
 
-const Detail = () => {
+const Detail = ({ onCancle }) => {
 
   const extra = (
     <Row>
@@ -30,7 +30,9 @@ const Detail = () => {
     </Row>
   );
 
-
+  const handleCancle =() => {
+    onCancle()
+  }
 
   const description = (
     <DescriptionList className={styles.headerList} size="small" col="2">
@@ -64,12 +66,15 @@ const Detail = () => {
           <Tabs defaultActiveKey="1" onChange={callback}>
             <Tabs.TabPane tab="CPU" key="1">
               <CPU />
+              <Properties />
             </Tabs.TabPane>
             <Tabs.TabPane tab="内存" key="2">Content of Tab Pane 2</Tabs.TabPane>
             <Tabs.TabPane tab="磁盘" key="3">Content of Tab Pane 3</Tabs.TabPane>
           </Tabs>
         </div>
+        <Button onClick={handleCancle}>取消</Button>
       </Card>
+
     </PageHeaderLayout>
 )
 

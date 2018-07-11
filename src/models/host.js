@@ -8,7 +8,9 @@ export default {
       list: [],
       pagination: {},
     },
-    list: [],
+    showList: true,
+    showDetail: false,
+    selectedRows: [],
   },
 
   effects: {
@@ -29,8 +31,22 @@ export default {
   },
 
   reducers: {
+
+    /**
+     * 公共方法，将action中的state加入到state中
+     * @param state
+     * @param action
+     * @returns {{}}
+     */
+    publicMethod(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+      }
+    },
+
+
     queryList(state, action) {
-      console.log(action.payload)
       return {
         ...state,
         data :  action.payload,

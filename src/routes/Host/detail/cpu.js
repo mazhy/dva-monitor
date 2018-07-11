@@ -10,28 +10,7 @@ const scale = [{
   max: 60,
 }];
 
-let newData = [
-  { percentage: '0',  value: 20 },
-  { percentage: '3',  value: 34 },
-  { percentage: '6',  value: 54 },
-  { percentage: '9',  value: 23 },
-  { percentage: '12', value: 87 },
-  { percentage: '15', value: 100 },
-  { percentage: '18', value: 23 },
-  { percentage: '21', value: 54 },
-  { percentage: '24', value: 76 },
-  { percentage: '27', value: 12 },
-  { percentage: '30', value: 98 },
-  { percentage: '33', value: 23 },
-  { percentage: '36', value: 34 },
-  { percentage: '39', value: 65 },
-  { percentage: '42', value: 12 },
-  { percentage: '45', value: 32 },
-  { percentage: '48', value: 100 },
-  { percentage: '51', value: 43 },
-  { percentage: '54', value: 54 },
-  { percentage: '57', value: 76 },
-]
+
 export default class Cpu extends React.Component {
 
   constructor(props) {
@@ -68,10 +47,32 @@ export default class Cpu extends React.Component {
    * 更新图表数组
    */
   componentDidMount() {
+    const dataList = [
+      { percentage: '0',  value: 20 },
+      { percentage: '3',  value: 34 },
+      { percentage: '6',  value: 54 },
+      { percentage: '9',  value: 23 },
+      { percentage: '12', value: 87 },
+      { percentage: '15', value: 100 },
+      { percentage: '18', value: 23 },
+      { percentage: '21', value: 54 },
+      { percentage: '24', value: 76 },
+      { percentage: '27', value: 12 },
+      { percentage: '30', value: 98 },
+      { percentage: '33', value: 23 },
+      { percentage: '36', value: 34 },
+      { percentage: '39', value: 65 },
+      { percentage: '42', value: 12 },
+      { percentage: '45', value: 32 },
+      { percentage: '48', value: 100 },
+      { percentage: '51', value: 43 },
+      { percentage: '54', value: 54 },
+      { percentage: '57', value: 76 },
+    ]
     const { data } = this.state
     this.timer = setInterval(() => {
-      if(newData.length > 0) {
-        const first = newData.shift()
+      if(dataList.length > 0) {
+        const first = dataList.shift()
         data.shift()
         data.push(first)
 
@@ -79,7 +80,7 @@ export default class Cpu extends React.Component {
         const first = data.shift()
         data.push(first)
       }
-
+      console.log(data)
       this.setState({
         data,
       })
